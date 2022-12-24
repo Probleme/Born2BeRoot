@@ -1,0 +1,32 @@
+1-Machine virtuelle?
+	-Definition :
+		Une machine virtuelle est une implementation logicielle d'un ordinateur qui execute des programmes comme une machine physique.
+		Il fournit une couche d'abstraction entre le materiel et le logiciel, permettant a plusieurs systemes d'exploitation et applications de s'executer sur le meme materiel physique.
+	-Comment ca marche ?
+		1-Le systeme d'exploitation (OS) hote installe et execute le logiciel de virtualisation (VMware ou virtualbox).
+		2-le logiciel de virtualisation cree une machine virtuelle et alloue des ressources materielles (cpu, memoire, stockage, reseau) a la VM.
+		3-la VM installe un systeme d'exploitation (OS invite) et execute des applications comme s'il s'agissait d'une machine physique.
+		4-le logiciel de virtualisation traduit le os invite et les instructions que le materiel hote peut comprendre et execute.(virtualisation).
+		5-le materiel hote execute les instructions et renvoie les resultats au systeme d'exploitation inviter et aux applications executees sur la VM.
+2-Debian contre Rocky ?
+	-Qu'est-ce que Rocky ?
+		Rocky Linux est un système d'exploitation open source conçu pour être compatible binaire avec Red Hat Enterprise Linux (RHEL).
+	-qu'est-ce que debian ?
+		Debian est un système d'exploitation open source largement utilisé à diverses fins. Il est connu pour sa stabilité, sa sécurité et sa flexibilité.
+	-Différences entre Rocky et Debian ?
+		La principale différence entre ces deux est que Rocky est conçu pour être un logiciel libre et open-source,
+		tandis que debian est un système d'exploitation autonome axé sur la stabilité, la sécurité et la flexibilité.
+3-le but de virtuelles machines ?
+	Il fournit une couche d'abstraction entre le materiel et le logiciel, permettant a plusieurs systemes d'exploitation et applications de s'executer sur le meme materiel physique.
+4-Difference entre APT et aptitude ?
+	-APT (outil d'emballage avancé) ?
+		APT est un système de gestion de packages utilisé par de nombreuses distributions Linux, y compris Debian et Ubuntu, pour installer, mettre à jour et gérer des packages logiciels.
+		APT utilise une base de données des packages disponibles, leurs dépendances et les relations entre eux pour installer et gérer automatiquement les logiciels.
+	-aptitude ?
+		aptitude est une interface basée sur un terminal pour APT qui fournit une interface plus conviviale pour la gestion des packages logiciels.
+		Il permet de rechercher, d'installer et de supprimer des packages à l'aide d'une interface utilisateur basée sur des menus.
+	-Différence entre apt et aptitude ?
+		aptitude a une interface utilisateur basée sur des menus qui peut automatiquement mettre à jour les packages et gérer les conflits de packages.
+		alors qu'apt est un outil en ligne de commande, il ne peut pas faire ce que fait aptitude.
+5-Qu'est-ce qu'AppArmor (Application Armor) ?
+	AppArmor est un module de sécurité Linux qui permet aux administrateurs de spécifier les actions que les programmes individuels sont autorisés à effectuer.

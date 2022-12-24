@@ -1,0 +1,116 @@
+1-virtual machine ?
+	-Definition :
+		A virtual machine is a software implementation of a computer that executes programs like aphysical machine.
+		It provides a layer of abstraction between the hardware and the software, allowing multiple operating systems and applications tor un on the same physical hardware.
+	-How does it work ?
+		1-The host operating system installs and runs the virtualization software (VMware or VirtualBox).
+		2-The virtualization software creates a virtual machine and allocates hardware ressources (cpu, memory, storage, network) to the VM.
+		3-The VM installs an operating system and(guest OS) runs applications as if it were a physical machine.
+		4-The virtualization software translates the guest OS and application instructions into instructions that the host hardware can understand and execute. This is called virtualization.
+		5-The host hardware executes the instructions and sends the results back to the guest OS and applications running in the VM.
+2-Debian vs Rocky ?
+	-What is Rocky ?
+		Rocky Linux is an open-source operating system that is designed to be binary-compatible with Red Hat Enterprise Linux(RHEL).
+	-what is debian ?
+		Debian is an open-source operating system that is widely used for a variety of purposes.it is known for its stability, security, flexibility.
+	-Differences between Rocky and Debian ?
+		The main Difference between these two is that Rocky is designed to be a free and open-source,
+		while debian is a standalone operating system with a focus on stability, security and flexibility.
+3-The purpose of virtual machine ?
+	It provides a layer of abstraction between the hardware and the software, allowing multiple operating systems and applications tor un on the same physical hardware.
+4-The difference between apt and aptitude ?
+	-APT(Advanced Packaging Tool) ?
+		APT is a package management system used by many linux distributions, including Debian and Ubuntu, to install , update and manage software packages.
+		APT uses a database of available packages, their dependencies, andthe relationships between them to automatically install and manage software.
+	-aptitude ?
+		aptitude is a terminal-based frontend for APT that providesa more user-friendly interface for managing software packages.
+		It allow to search for, install, and remove packages using a menu-based user interface.
+	-Difference between apt and aptitude ?
+		aptitude has menu-based user interface can automatically upgrade packages and handle package conflicts.
+		while apt is a command-line tool can't do what aptitude does doing it.
+5-What is AppArmor(Application Armor) ?
+	AppArmor is a linux security module that allows admistrators to specify the actions that individual programs are allowed to perform.
+	-Check AppArmor ?
+		sudo aa-status
+6-Check status of ufw , ssh and choseen OS(debian or rocky) :
+	-UFW(Uncomplicated Firewall) Definition?
+		UFW is a user-friendly firewall application for linux systems.
+		It is designed to make it easy to configure the firewall on a linux system.
+	-Command check status ufw ?
+		sudo systemctl status ufw
+		sudo systemctl status ufw verbose
+	-SSH(Secure Shell) ?
+		SSH is a network protocol that allows secure communication between a client and a server over a network.
+	-Command check status ssh ?
+		sudo systemctl status SSH
+	-Command check OS choseen ?
+		head -n 2 /etc/os-release (head : display first lines of a file)
+7-Check the login and groups / Password Policy / Advantages\disadvantages of this password?
+	-Command check user and that is sudo and in user42 ?
+		whoami / getent group | grep user42
+	-Password Period ?
+		check in : sudo vim /etc/login.defs
+	-Password rules ? (Policy)
+		check in : sudo vi /etc/pam.d/common-password
+		password requisite pam-cracklib.so retry=3 minlen=10 difok=7 ucredit=-1 lcredit=-1 dcredit=-1 reject_username enforce_for_root maxrepeat=3
+		retry : password input count setting , up to 3 inputs possible.
+		minlen : password minimum lenght , at least 10 characters.
+		difok : number of characters that must differ from the previous password.(doesn't apply to root because root doesn't store old password).
+		ucredit : upper case limit , -1 : at least 1 character.
+		lcredit : lower case limit , -1 : at least 1 character.
+		dcredit : number limit , -1 : at least 1 character.
+		reject_username : username cannot be entred in password either verbatim or reversed.
+		enforce for root : Apply that password policy to root as well.
+		maxrepeat : Duplicate character limit, Duplicate up to 3 characters.
+	-Advantages / disadvantages of password policy ?
+		-Advantages : Due to the password policy, it is possible to create a strong password (enhanced security)
+			*Improves security by requiring strong passwords and regulary changing them.
+			*Increases productivity by reducing password-related issues.
+			*Helps to meet compliance requirements.
+		-disadvantages : Inconvenience of having to change the password every 30 days, unable to generate the same password as before.
+			*Can be difficult for users to remember complex password.
+			*Some users may resist the policy.
+			*Can be misused if not properly enforced or communicated to users.
+8-Create/Delete new user && create/Delete group && check?
+	-Create/Delete User :
+		sudo adduser <username>
+		sudo deluser <username>
+	-Create/Delete group :
+		sudo groupadd <groupname>
+		sudo groupdel <groupname>
+		sudo usermod -aG <groupname> <username> : Assign a user to the group.
+		sudo id username : check the new username has been assigned to new groupname. / sudo vim /etc/shadow and sudo vim /etc/passwd .
+	-Check the group status :
+		getent group | grep <groupname to be found> .
+9-Check/Modify Hostname && partitionnage of disk && LVM(Logical Volume Manager)?
+	-Check the hostname :
+		sudo hostnamectl
+	-Modify the hostname :
+		sudo hostnamectl set-hostname <new hostname> .
+	-view partition:
+		sudo lsblk .
+	-How LVM works :
+		LVM is a system for managing storage in Linux that allows administrators to create and manage logical Volume, wich are abstractions of physical storage devices.
+		LVM works by creating a layer of abstraction between the physical storage devices and the filesystems that use them.
+		The physical storage devices are grouped into volume groups, and logival volumes are created within these volume groups to store data.
+		LVM provides a flexible way to manage storage, allowing administrators to easily resize logical volumes and create snapshots for data protection and recovery.
+10- SUDO ?
+	-check sudo is installed : dpkg -l sudo
+11-UFW ?
+	-check the ufw is exist : dpkg l- ufw
+	-check ufw work or not : sudo systemctl status ufw
+	-UFW : is a firewall application for linux system that allows administrators to easily configure the firewallon their system.
+	-value of use ufw : using ufw can help to improve the security and productivity of a linux system, and provides an easy-to-use interface for configuring the firewall.
+	-Add/delete Port : sudo ufw allow 8080 || delete port: sudo ufw delete <number of port>
+12-SSH(Secure Shell) ?
+	-check ssh is installed : dpkg -l ssh
+	-check is work or not : sudo systemctl status ssh
+	-SSH : is a network protocol that alows secure connection between a client and a server over a network .
+	-value of using ssh : is used to remotely access and manage servers , as a well to securely transfer files between computers.
+	-verify port 4242 : sudo vim /etc/ssh/sshd_config
+
+13-Script Monitoring ?
+	-What is cron :
+		cron is a time-based job scheduling system in Unix-like operating systems,including Linux.
+		It allows administrators to schedul e tasks, sush as running scripts or programms, to be automatically run at a specific time or on a specific schedule.
+	-Script Monitoring :
