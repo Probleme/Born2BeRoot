@@ -1,0 +1,4 @@
+how virtual machine works ?(comment fonctionne une virtuelle machine)
+	Une machine virtuelle est une implementation logicielle d'un systeme informatique qui s'execute sur un ordinateur.
+	Elle permet a plusieurs systemes d'exploitation et applications de fonctionner sur un seul serveur physique.
+comment fonctionne?

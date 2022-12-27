@@ -1,6 +1,6 @@
 1-virtual machine ?
 	-Definition :
-		A virtual machine is a software implementation of a computer that executes programs like aphysical machine.
+		A virtual machine is a software implementation of a computer that executes programs like a physical machine.
 		It provides a layer of abstraction between the hardware and the software, allowing multiple operating systems and applications tor un on the same physical hardware.
 	-How does it work ?
 		1-The host operating system installs and runs the virtualization software (VMware or VirtualBox).
@@ -30,11 +30,12 @@
 		while apt is a command-line tool can't do what aptitude does doing it.
 5-What is AppArmor(Application Armor) ?
 	AppArmor is a linux security module that allows admistrators to specify the actions that individual programs are allowed to perform.
+	AppArmor s a Linux kernel security module that allows administrators to specify fine-grained access controls for programs running on a system.
 	-Check AppArmor ?
 		sudo aa-status
 6-Check status of ufw , ssh and choseen OS(debian or rocky) :
 	-UFW(Uncomplicated Firewall) Definition?
-		UFW is a user-friendly firewall application for linux systems.
+		UFW is a firewall management tool that allows users to control incoming and outgoing network traffic based on predetermined security rules.
 		It is designed to make it easy to configure the firewall on a linux system.
 	-Command check status ufw ?
 		sudo systemctl status ufw
@@ -89,7 +90,11 @@
 		sudo hostnamectl set-hostname <new hostname> .
 	-view partition:
 		sudo lsblk .
-	-How LVM works :
+	-How LVM(Logical volume manager) works :
+		*LVM works by creating a logical volume group (VG), which is a collection of physical disk drives that are managed as a single entity.
+		 Within the (VG) , we can create one or more logical volumes(LVs), wich can can be used like traditional disk partitions.
+		 We can also create logical volume snapshots, wich are point-in-time copies on an LV that can used for backup or recovery puprposes. 
+		
 		LVM is a system for managing storage in Linux that allows administrators to create and manage logical Volume, wich are abstractions of physical storage devices.
 		LVM works by creating a layer of abstraction between the physical storage devices and the filesystems that use them.
 		The physical storage devices are grouped into volume groups, and logival volumes are created within these volume groups to store data.
@@ -99,7 +104,7 @@
 11-UFW ?
 	-check the ufw is exist : dpkg l- ufw
 	-check ufw work or not : sudo systemctl status ufw
-	-UFW : is a firewall application for linux system that allows administrators to easily configure the firewallon their system.
+	-UFW : is a firewall application for linux system that allows administrators to easily configure the firewall on their system.
 	-value of use ufw : using ufw can help to improve the security and productivity of a linux system, and provides an easy-to-use interface for configuring the firewall.
 	-Add/delete Port : sudo ufw allow 8080 || delete port: sudo ufw delete <number of port>
 12-SSH(Secure Shell) ?
@@ -114,3 +119,70 @@
 		cron is a time-based job scheduling system in Unix-like operating systems,including Linux.
 		It allows administrators to schedul e tasks, sush as running scripts or programms, to be automatically run at a specific time or on a specific schedule.
 	-Script Monitoring :
+
+printf "#Architecture: "
+ uname -a
+ System information output, -a: Kernel name, network host name, and operating system output
+
+printf "#CPU physical : "
+ nproc --all
+ Number of all installed processors
+
+printf "#vCPU : "
+ cat /proc/cpuinfo | grep processor | wc -l
+ Finds only processes among files containing CPU information and outputs the number
+
+printf "#Memory Usage: "
+ free -m | grep Mem |awk '{printf"%d/%dMB (%.2f%%)\n", $3, $2, $3/$2 * 100}'
+ free: Display system memory usage status Command-m: Display in megabytes
+
+printf "#Disk Usage: "
+ df -BM -a | grep /dev/mapper/ | awk '{sum+=$3}END{print sum}' | tr -d '\n'
+printf "/"
+ df -H  -a | grep /dev/mapper/LVMGroup-root | awk '{sum+=$2}END{printf sum}' | tr -d '\n'
+printf "Gb ("
+ df -BM -a | grep /dev/mapper/ | awk '{sum1+=$3 ; sum2+=$4} END {printf "%d", sum1 / sum2 * 100}' | tr -d '\n'
+printf "%%)\n"
+df : une commande pour afficher l'utilisation de l'espace disque du système de fichiers 
+-a : une option pour afficher tous les systèmes de fichiers, y compris les systèmes de fichiers à 0 bloc 
+-B : une option pour afficher la capacité en définissant la taille spécifiée (TAILLE) en unités de bloc 
+-BM : Afficher la capacité en définissant la taille dans l'unité de bloc sur 1M 
+-BM : Afficher la capacité en définissant la taille dans l'unité de bloc en définissant la taille sur 1G
+
+printf "#CPU load: "
+ mpstat | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }'
+ mpstat : une commande qui affiche le CPU disponible et l'utilisation par cœur (sysstat doit être installé)
+
+printf "#Last boot: "
+ who -b | sed 's/^ *system boot //g'
+ who : imprime des informations sur l'utilisateur connecté à l'hôte 
+ -b : option pour imprimer l'heure du dernier démarrage du système
+
+printf "#LVM use: "
+if [ "$(lsblk | grep lvm | wc -l)" -gt 0 ] ; then printf "yes\n" ; else printf "no\n" ; fi
+
+printf "#Connexions TCP : "
+ ss | grep -i  tcp | wc -l | tr -d  '\n'
+printf " ESTABLISHED\n"
+ss : un utilitaire qui peut interroger l'état du socket et joue un rôle similaire à netstat. 
+-i : insensible à la casse
+
+printf "#User log: "
+who | wc -l
+who: Displays information about the user logged into the host
+
+printf "#Network: IP "
+ /sbin/ifconfig | grep broadcast | sed 's/inet//g' | sed 's/netmask.*//g' | sed 's/ //g' | tr -d '\n'
+printf " ("
+ /sbin/ifconfig | grep ether | sed 's/.*ether //g' | sed 's/ .*//g' | tr -d '\n'
+ hostname : commande pour vérifier et définir le nom du système 
+ -I : option pour imprimer l'adresse IP de l'hôte
+
+printf ")\n"
+
+printf "#Sudo : "
+ cat /var/log/auth.log | grep -a sudo | grep -a 'COMMAND=' | wc -l | tr -d '\n'
+printf " cmd\n"
+journalctl : les journaux de service Systemd peuvent être vérifiés et les informations systemd sont analysées par systemd-journald.service.
+_COMM=sudo : Afficher des journaux spécifiques (sudo)
+exit 0
